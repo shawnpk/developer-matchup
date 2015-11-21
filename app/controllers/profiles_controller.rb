@@ -24,6 +24,19 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def update
+    @user = User.find(params[:user_id])
+    @profile = @user.profile
+
+    if @profile.update(profile_params)
+      flash[:success] = 'Your profile has been successfully updated.'
+      redirect_to user_path(params[:user_id])
+    else
+      flash.now[:danger] = 'There was a problem with your profile. Please try again.'
+      render :edit
+    end
+  end
+
   private
    def profile_params
     params.require(:profile).permit(:first_name, :last_name, :job_title, 
